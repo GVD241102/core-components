@@ -1,17 +1,16 @@
 import { StyleSheet, Text, TextInput, View, Button } from "react-native";
 import React from "react";
+import { FlatList } from "react-native-web";
 
 export default function App() {
   const [contact, setContact] = React.useState("");
+  const [contacts, setContacts] = React.useState([]);
 
-  //TODO: Tip 1 for the assignment 2
-  //const [contacts, setContacts] = React.useState([]);
-
-  const addContactHandler = () => {
-    console.log(contact);
-
-    //TODO: Tip 2 for the assignment 2
-    //setContacts([...contacts, { name: contact }]);
+  const addContactHandler = () =>  {
+    if (contact.trim() !== "") {
+      setContacts([...contacts, {  name: contact }]);
+      setContact("");
+    }
   };
   return (
     <View style={styles.appContainer}>
@@ -25,6 +24,14 @@ export default function App() {
       </View>
       <View style={styles.contactsContainer}>
         <Text>List of Contacts...</Text>
+        <FlatList
+          data={contacts}
+          renderItem={({ item }) => (
+            <View style={styles.contactItem}>
+              <Text>{item.name}</Text>
+            </View>
+          )}
+        />
       </View>
     </View>
   );
@@ -53,5 +60,10 @@ const styles = StyleSheet.create({
   },
   contactsContainer: {
     flex: 6,
+  },
+  contactItem: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+    paddingVertical: 10,
   },
 });
